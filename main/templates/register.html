@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookLook</title>
+    <style>
+        body {
+            background: #1a1a1a;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" required/>
+
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required/>
+        
+        <button type="submit">Register</button>
+
+        {% if error %}
+            <p style="color: red;">{{error}}</p>
+        {% endif %}
+    </form>
+
+</body>
+</html>
