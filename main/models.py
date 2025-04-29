@@ -8,9 +8,15 @@ from django.core.validators import MinValueValidator
 class Book(models.Model):
     title = models.CharField("Name", max_length=50)
     description = models.CharField("Description", max_length=500)
-    image = models.ImageField("Image")
+    image = models.ImageField("Image", blank=True)
     price = models.IntegerField("Price", default=0, validators=[MinValueValidator(0)])
+    TOPICS = [
+        ("one", "topicone"),
+        ("two", "topictwo")
+    ]
     
+    
+    topic = models.CharField("Topic", choices=TOPICS)
     def __str__(self):
         return self.title
 
@@ -34,7 +40,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
     username = models.CharField("username", max_length=50, unique=True)
     password = models.CharField("password", max_length=255)
-
+    avatar = models.ImageField("Avatar", blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)

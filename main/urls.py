@@ -9,6 +9,8 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("login/", views.login, name="login"),
     path("register/", views.register, name="register"),
+    path("users/", views.users, name="user"),
+    path("logout/", views.logouts, name="logout")
 ] 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

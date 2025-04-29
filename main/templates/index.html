@@ -37,6 +37,24 @@
         .logo h3:hover {
             color: #ff6600;
         }
+        header a {
+            background-color: #00ffff;
+            color: #1a1a1a;
+            padding: 10px 20px;
+            margin-left: 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
+        }
+        
+        header a:hover {
+            background-color: #ff6600;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+        }
+        
         .logo {
             position: absolute;
             left: 5%;
@@ -119,12 +137,19 @@
         <div class="logo">
             <h3>BookLook</h3>
         </div>
+        <div>
+            <a href="/login">Log in</a>
+            <a href="/register">Register</a>
+            <a href="/users">Setting</a>
+            <a href="/logout">logout</a>
+
+        </div>
     </header>
 
     <div class="welcom">
         <div class="welcom-text">
             {% if user %}
-                <h2>Welcome to back {{ user.username }}!</h2> 
+                <h2>Welcome back {{ user.username }}!</h2> 
             {% else %}
                 <h2>Hello Guest!</h2> 
             {% endif %}
@@ -134,7 +159,11 @@
     <div class="book-container">
         {% for book in books %}
             <div class="book">
-                <img src={{book.image.url}} alt={{book.title}}>
+                {% if book.image %}
+                    <img src={{book.image.url}} alt={{book.title}}>                    
+                {% else %}
+                    <img src="" alt={{book.title}}>
+                {% endif %}
                 <h2>Name: {{book.title}}</h2>
                 <p>Description: {{book.description}}</p>
                 <p>Price: {{book.price}}</p>
