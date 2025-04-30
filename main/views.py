@@ -6,17 +6,21 @@ from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth import authenticate, logout, login as auth_login
 from django.contrib.auth.hashers import make_password, check_password
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponseForbidden
 # Create your views here.
 @ratelimit(key="ip", rate="5/s", method=["POST", "GET"], block=True)
 def index(request):
 
-    user_id = request.session.get("user_id")
-    user = User.objects.get(id=user_id) if user_id else None
+
+    user = request.user if request.user.is_authenticated else None
+    # user_id = request.session.get("user_id")
+    # user = User.objects.get(id=user_id) if user_id else None
     books = Book.objects.all()
     return render(request, "index.html", {"books": books, "user": user})
 
 
+
+        
 def logouts(request):
     logout(request)
     return redirect("/")
@@ -29,7 +33,7 @@ def users(request):
     if request.method == "POST":
         if request.POST.get("action") == "delete":
             confirmation = request.POST.get("confirmation")
-            if confirmation == "DELETE":
+            if confirmation == f"DELETE":
                 
                 user.delete()
                 logout(request)
@@ -46,7 +50,10 @@ def users(request):
             
 
             if new_username:
-                user.username = new_username
+                if User.objects.exclude(id=user.id).filter(username=new_username).exists():
+                    return render(request, "users.html", {"user":user, "error": "this name is alredy use"})
+                else:
+                    user.username = new_username
             if password:
                 user.set_password(password)
             if avatar:
@@ -78,8 +85,8 @@ def register(request):
         new_user.save()
         
 
-        
-        request.session["user_id"] = new_user.id
+        auth_login(request, new_user)        
+        # request.session["user_id"] = new_user.id
         response = redirect("index")
         response.set_cookie("auth", "true", max_age=3600000, secure=True)
         return response
@@ -97,7 +104,7 @@ def login(request):
             
         if  user and check_password(password, user.password):
             auth_login(request, user)
-            request.session["user_id"] = user.id
+            # request.session["user_id"] = user.id
             response = redirect("index")
             response.set_cookie("auth", "true", max_age=36000000, secure=True)
             return response
