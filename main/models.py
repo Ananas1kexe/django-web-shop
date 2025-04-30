@@ -11,8 +11,14 @@ class Book(models.Model):
     image = models.ImageField("Image", blank=True)
     price = models.IntegerField("Price", default=0, validators=[MinValueValidator(0)])
     TOPICS = [
-        ("one", "topicone"),
-        ("two", "topictwo")
+        ("Modern prose", "Modern prose"),
+        ("Fantasy", "Fantasy"),
+        ("Romantic fantasy", "Romantic fantasy"),
+        ("Fighting fantasy", "Fighting fantasy"),
+        ("Urban fantasy", "Urban fantasy"),
+        ("Dark fantasy", "Dark fantasy"),
+        ("Alternate history", "Alternate history"),
+        ("Fanfic", "Fighting Fanfic"),
     ]
     
     
@@ -41,6 +47,13 @@ class User(AbstractBaseUser):
     username = models.CharField("username", max_length=50, unique=True)
     password = models.CharField("password", max_length=255)
     avatar = models.ImageField("Avatar", blank=True)
+    
+    BLOCKED = [
+        ("true", "true"),
+        ("false", "false")
+    ]
+    blok = models.BooleanField("Block", default=False)
+    
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
