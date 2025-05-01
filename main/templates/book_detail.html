@@ -1,0 +1,33 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ book.title }} — BookLook</title>
+  <link rel="stylesheet" href="{% static 'app/book.css' %}">
+</head>
+<body>
+
+  <main class="book-detail">
+    <h1>{{ book.title }}</h1>
+    {% if book.image %}
+      <img src="{{ book.image.url }}" alt="{{ book.title }}" class="book-image">
+    {% endif %}
+    <p><strong>Description:</strong> {{ book.description }}</p>
+    <p><strong>Topic:</strong> {{ book.topic }}</p>
+    <p><strong>Price:</strong> {{ book.price }}</p>
+
+    {% if text_content %}
+      <section class="book-content">
+        {{ text_content|linebreaks }}
+      </section>
+    {% else %}
+      <p class="no-text"></p>
+    {% endif %}
+
+    <a href="{% url 'index' %}" class="btn-back">← Вернуться к списку книг</a>
+  </main>
+</body>
+</html>

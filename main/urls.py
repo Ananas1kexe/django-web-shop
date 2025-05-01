@@ -10,8 +10,9 @@ urlpatterns = [
     path("login/", views.login, name="login"),
     path("register/", views.register, name="register"),
     path("users/", views.users, name="user"),
-    path("logout/", views.logouts, name="logout")
+    path("logout/", views.logouts, name="logout"),
+    
+    path("book/<int:pk>/", views.book_detail, name="book_detail")
 ] 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.MEDIA_ROOT)

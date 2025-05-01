@@ -6,9 +6,10 @@ from django.core.validators import MinValueValidator
 
 
 class Book(models.Model):
-    title = models.CharField("Name", max_length=50)
+    title = models.CharField("Name", max_length=50, unique=True)
     description = models.CharField("Description", max_length=500)
     image = models.ImageField("Image", blank=True)
+    text = models.FileField("Text")
     price = models.IntegerField("Price", default=0, validators=[MinValueValidator(0)])
     TOPICS = [
         ("Modern prose", "Modern prose"),

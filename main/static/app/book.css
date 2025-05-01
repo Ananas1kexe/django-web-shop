@@ -1,0 +1,108 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background:rgb(17, 17, 17);
+  color: #ffffff;
+}
+
+
+.logo h3 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.nav-links a {
+  margin-left: 1rem;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: #c7d2fe;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+  vertical-align: middle;
+}
+
+main.book-detail {
+  max-width: 800px;
+  margin: 2rem auto;
+  border: 1px solid white;
+  padding: 2rem;
+  background-color: #333;
+  border-radius: 0.8rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.book-detail h1 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.book-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 0.6rem;
+  margin: 1.5rem 0;
+}
+
+.book-detail p {
+  font-size: 1rem;
+  margin: 1rem 0;
+}
+
+.book-detail p strong {
+  color: #ffffff;
+}
+
+.book-content {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: #b4a87b;
+  border-radius: 0.6rem;
+  border: 1px solid white;
+  line-height: 1.8;
+  font-size: 1rem;
+  color: #000000;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.book-content p {
+  margin-bottom: 1rem;
+}
+
+.no-text {
+  margin-top: 2rem;
+  text-align: center;
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.btn-back {
+  display: inline-block;
+  margin-top: 2rem;
+  text-decoration: none;
+  background-color: #ff6f61;
+  color: white;
+  padding: 0.8rem 1.4rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn-back:hover {
+  background-color: #eb5e51;
+  transform: translateY(-3px);
+}
