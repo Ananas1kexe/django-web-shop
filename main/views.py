@@ -81,7 +81,7 @@ def add_book(request):
 
 @ratelimit(key="ip", rate="5/m", method=["POST"], block=True)
 @login_required(login_url="login")
-def users(request):
+def setting(request):
     user = request.user
     error = None
     if request.method == "POST":
@@ -164,7 +164,7 @@ def login(request):
         
         user = User.objects.filter(username=username).first()
             
-        if  user and check_password(password, user.password):
+        if user and check_password(password, user.password):
             auth_login(request, user)
             # request.session["user_id"] = user.id
             response = redirect("index")
