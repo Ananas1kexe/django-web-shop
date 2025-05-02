@@ -10,7 +10,7 @@ urlpatterns = [
     path("add_book/", views.add_book, name="add_book"),
     path("login/", views.login, name="login"),
     path("register/", views.register, name="register"),
-    path("users/", views.users, name="user"),
+    path("setting/", views.setting, name="user"),
     path("logout/", views.logouts, name="logout"),
     path("book/<int:pk>/", views.book_detail, name="book_detail")
 ] 
