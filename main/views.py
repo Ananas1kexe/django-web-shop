@@ -1,23 +1,28 @@
 import io
 from django.shortcuts import render, redirect, get_object_or_404
 from django_ratelimit.decorators import ratelimit
-from .models import Book
-from .models import User
-from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout, login as auth_login
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponseForbidden
-
+from .forms import SearchForm
+from .models import Book, User
 
 # Create your views here.
 @ratelimit(key="ip", rate="5/s", method=["POST", "GET"], block=True)
 def index(request):
-
-
     user = request.user if request.user.is_authenticated else None
     books = Book.objects.all()
-    return render(request, "index.html", {"books": books, "user": user})
+    form = SearchForm(request.GET or None)
+    
+    if form.is_valid():
+        query = form.cleaned_data.get("query")
+        if query:
+            books = books.filter(title__icontains=query)
+            
+    return render(request, "index.html", {"books": books, "user": user, 'form': form})
 
 
 def book_detail(request, pk):
@@ -37,6 +42,43 @@ def logouts(request):
     logout(request)
     return redirect("/")
 
+
+@ratelimit(key="ip", rate="5/m", method=["POST"], block=True)
+@login_required(login_url="login")
+def add_book(request):
+    user = request.user
+    title = request.POST.get("title")
+    description = request.POST.get("description")
+    author = request.POST.get("author")
+    image = request.FILES.get("image")
+    text = request.FILES.get("text")
+    price_str = request.POST.get("price")
+
+    try:
+        price = float(price_str)
+    except (ValueError, TypeError):
+        return render(request, "add_book.html", {"error": "Price is integer"})
+
+    topic = request.POST.get("topic")    
+
+
+    if not user.verify:
+        return HttpResponseForbidden("Its action only for verefication users")
+
+    if not title:
+        return render(request, "add_book.html", {"error": "Title cannot be empty"})
+    if not text:
+        return render(request, "add_book.html", {"error": "Text cannot be empty"})
+
+
+    if Book.objects.filter(title=title).exists():
+        return render(request, "add_book.html", {"error": "title alredy used"})
+
+    new_book = Book(title=title, description=description, author=author, image=image, text=text, price=price, topic=topic)
+    new_book.save()
+    
+    return render(request, "add_book.html")
+
 @ratelimit(key="ip", rate="5/m", method=["POST"], block=True)
 @login_required(login_url="login")
 def users(request):
@@ -46,7 +88,6 @@ def users(request):
         if request.POST.get("action") == "delete":
             confirmation = request.POST.get("confirmation")
             if confirmation == f"DELETE":
-                
                 user.delete()
                 logout(request)
                 return redirect("/")
@@ -65,6 +106,8 @@ def users(request):
                     user.username = new_username
             if password:
                 if not check_password(check, user.password):
+                    # Maybe use later
+                    # messages.error(request, "Incorrect password")
                     return render(request, "users.html", {"user":user, "error": "Incorrect password."})
 
                 user.set_password(password)
@@ -80,6 +123,9 @@ def users(request):
         
         
     return render(request, "users.html", {"user": user, "error": error})
+
+
+
 
 @ratelimit(key="ip", rate="10/m", method=["POST", "GET"], block=True)
 def register(request):

@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.core.validators import MinValueValidator
 
 # Create your models here.
@@ -8,6 +8,7 @@ from django.core.validators import MinValueValidator
 class Book(models.Model):
     title = models.CharField("Name", max_length=50, unique=True)
     description = models.CharField("Description", max_length=500)
+    author = models.CharField("Author", max_length=50, default="not specified", blank=True)
     image = models.ImageField("Image", blank=True)
     text = models.FileField("Text")
     price = models.IntegerField("Price", default=0, validators=[MinValueValidator(0)])
@@ -19,7 +20,7 @@ class Book(models.Model):
         ("Urban fantasy", "Urban fantasy"),
         ("Dark fantasy", "Dark fantasy"),
         ("Alternate history", "Alternate history"),
-        ("Fanfic", "Fighting Fanfic"),
+        ("Fanfic", "Fanfic"),
     ]
     
     
@@ -44,15 +45,11 @@ class UserManager(BaseUserManager):
         return self.create_user(username, password, **extra_fields)
     
     
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField("username", max_length=50, unique=True)
     password = models.CharField("password", max_length=255)
     avatar = models.ImageField("Avatar", blank=True)
-    
-    BLOCKED = [
-        ("true", "true"),
-        ("false", "false")
-    ]
+    verify = models.BooleanField("Verify", default=False)
     blok = models.BooleanField("Block", default=False)
     
     is_active = models.BooleanField(default=True)

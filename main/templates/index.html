@@ -47,7 +47,27 @@
             {% endif %}
         </div>
     </div>
-
+    <div class="container">
+        <h1 class="search-title">Book Search</h1>
+        <form method="get" class="search-form">
+            {{ form.query }}<br>
+            <button type="submit" class="search-button">Search</button>
+        </form>
+        
+        
+        {% if request.GET.query %}
+        
+            {% for book in books %}
+                <h2 class="results-title">Results:</h2>
+                <ul class="results-list">
+                    <li class="result-item">
+                    <span>{{ book.title }}</span> — {{ book.author }}
+                    </li>
+                </ul>
+            {% endfor %}
+       
+        {% endif %}
+    </div>
     <div class="book-container">
         {% for book in books %}
             <a href="{% url 'book_detail' book.pk %}" class="book-link">
@@ -57,10 +77,10 @@
                 {% else %}
                     <img src="" alt={{book.title}}>
                 {% endif %}
-                <h2>Name: {{book.title}}</h2>
+                <h2>Name: {{book.title}} </h2>
                 <p>Description: {{book.description}}</p>
                 <p>Topic: {{book.topic}}
-                <p>Price: {{book.price}}</p>
+                <p>Price: {{book.price}} Author: {{book.author}}</p>
                 
             </div>
             </a>
