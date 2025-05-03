@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate, logout, login as auth_login
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponseForbidden
 from .forms import SearchForm
-from .models import Book, User
+from .models import Book, User, Like, Report
 
 # Create your views here.
 @ratelimit(key="ip", rate="5/s", method=["POST", "GET"], block=True)
@@ -37,11 +37,41 @@ def book_detail(request, pk):
     return render(request, "book_detail.html", {"book": book, "text_content": text_content, "user": request.user if request.user.is_authenticated else None})
 
 
-        
-def logouts(request):
-    logout(request)
-    return redirect("/")
 
+@login_required
+def like_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    like, created = Like.objects.get_or_create(user=request.user, book=book)
+    if not created:
+        like.delete()
+        
+    return redirect("book_detail", pk=pk)
+
+@ratelimit(key="ip", rate="5/m", method=["POST"], block=True)
+@login_required(login_url="login")
+def report(request, book_id):
+    user = request.user
+    book = get_object_or_404(Book, pk=book_id)
+
+    if request.method == "POST":
+        name = request.POST.get("name")
+        reason = request.POST.get("reason")
+        note = request.POST.get("note")
+        r_reason = request.POST.get("r_reason")
+        proof = request.FILES.get("image")
+
+        Report.objects.create(
+            user=user,
+            name=name,
+            reason=reason,
+            r_reason=r_reason,
+            note=note,
+            proof=proof,
+            book=book
+        )
+        return render(request, "report.html", {"user": user, "success": "Report submitted successfully", "book": book})
+    
+    return render(request, "report.html", {"user": user, "book": book})
 
 @ratelimit(key="ip", rate="5/m", method=["POST"], block=True)
 @login_required(login_url="login")
@@ -176,3 +206,7 @@ def login(request):
         
 
     return render(request, "login.html")
+
+def logouts(request):
+    logout(request)
+    return redirect("/")

@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ book.title }} — BookLook</title>
   <link rel="stylesheet" href="{% static 'app/book.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 </head>
 <body>
 
@@ -26,8 +28,15 @@
     {% else %}
       <p class="no-text"></p>
     {% endif %}
+    <form method="post" action="{% url 'like_book' book.pk %}">
+      {% csrf_token %}
+      <button type="submit" style="background: none; border: none; cursor: pointer; font-size: 1.5rem; color: #e74c3c;">
+        <i class="fa-solid fa-heart"></i> {{ book.like_set.count }}
+      </button>
+    </form>
+    <a href="{% url "index" %}" class="btn-back">← Back to the list of books</a>
+    <a href="{% url "report" book.id %}" class="report"><i class="fa-solid fa-bug"></i> Report</a>
 
-    <a href="{% url 'index' %}" class="btn-back">← Вернуться к списку книг</a>
   </main>
 </body>
 </html>

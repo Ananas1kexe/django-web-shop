@@ -72,3 +72,40 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     def has_module_perms(self, app_label):
         return self.is_superuser
+    
+    
+    
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        unique_together = ("user", "book")
+        
+        
+        
+class Report(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField("name", max_length=50)
+    reason = models.TextField("reason", max_length=350)
+    note = models.TextField("note", max_length=350, blank=True)
+    resolved = models.BooleanField(name="resolved", default=False)
+    action_taken = models.CharField(name="action_taken", max_length=50, blank=True)
+    R_REASONS = [
+        ("vocr", "Violation of community rules"),
+        ("soa", "Spam or advertisement"),
+        ("obor", "Offensive behavior or language"),
+        ("iopc", "Inappropriate or prohibited content"),
+        ("fsosa", "Fraud, scam, or suspicious activity"),
+        ("ibtod", "Inappropriate book title or description"),
+        ("poci", "Plagiarism or copyright infringement"),
+    ]
+    
+    r_reason = models.CharField("r_reason", choices=R_REASONS, blank=True)
+    proof = models.ImageField("proof")
+    book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True, blank=True)
+
+    
+    def __str__(self):
+        return f"Report by {self.user.username}: {self.user}"

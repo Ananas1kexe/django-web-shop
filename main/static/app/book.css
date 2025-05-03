@@ -106,3 +106,16 @@ main.book-detail {
   background-color: #eb5e51;
   transform: translateY(-3px);
 }
+.report {
+  background: none; 
+  border: none; 
+  cursor: pointer; 
+  font-size: 1.5rem; 
+  color: #e74c3c;
+  transition: background-color 0.2s, transform 0.2s;
+
+}
+.report:hover {
+  text-decoration: underline;
+  transform: translateY(-3px);
+}
