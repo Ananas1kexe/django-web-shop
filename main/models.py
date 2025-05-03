@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.core.validators import MinValueValidator
-
+from django.utils import timezone
 # Create your models here.
 
 
@@ -92,6 +92,7 @@ class Report(models.Model):
     note = models.TextField("note", max_length=350, blank=True)
     resolved = models.BooleanField(name="resolved", default=False)
     action_taken = models.CharField(name="action_taken", max_length=50, blank=True)
+    created = models.DateTimeField("created", auto_now_add=True)
     R_REASONS = [
         ("vocr", "Violation of community rules"),
         ("soa", "Spam or advertisement"),
@@ -108,4 +109,4 @@ class Report(models.Model):
 
     
     def __str__(self):
-        return f"Report by {self.user.username}: {self.user}"
+        return f"Report by {self.user.username}: {self.user}(crated: {self.created})"
