@@ -1,0 +1,174 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: rgb(17, 17, 17);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 40px;
+    color: #fff;
+    font-size: 32px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+h3 {
+    color: #fff;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.login-container {
+    background: rgb(56, 56, 56);
+    border-radius: 8px;
+    border: 1px solid #fff;
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(31, 31, 31, 0.5);
+}
+
+.profile-container {
+    text-align: center;
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 15px;
+    border: 2px solid #fff;
+}
+
+.profile-avatar.placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #333;
+    font-size: 4.2rem;
+    color: #777;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #fff;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background: #333;
+    color: #fff;
+    font-size: 14px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #fff;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #ff6f61;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #e04e45;
+}
+
+.link-register {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.5s;
+}
+
+.link-register:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    text-align: center;
+    color: #ff6f61;
+    margin-top: 10px;
+}
+
+.success-message {
+    text-align: center;
+    color: #7ed321;
+    margin-bottom: 20px;
+}
+
+.likes-section {
+    text-align: left;
+    margin-top: 30px;
+}
+
+.likes-list {
+    list-style: none;
+}
+
+.likes-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.likes-thumb {
+    width: 50px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 12px;
+}
+
+.placeholder-thumb {
+    width: 50px;
+    height: 70px;
+    background: #444;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #777;
+    font-size: 1.2rem;
+    border-radius: 4px;
+}
+
+.no-likes {
+    color: #ccc;
+    font-style: italic;
+    margin-bottom: 20px;
+}

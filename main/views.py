@@ -47,6 +47,18 @@ def like_book(request, pk):
         
     return redirect("book_detail", pk=pk)
 
+
+@ratelimit(key="ip", rate="5/m", method=["POST"], block=True)
+@login_required(login_url="login")
+def profile(request):
+    user = request.user
+    likes = Like.objects.filter(user=user).select_related("book")
+    # if likes:
+    #     return render(request, "profile.html", {"user": user, "likes": likes})
+    # else:
+    #     return render(request, "profile.html", {"user": user})
+    return render(request, "profile.html", {"user": user, "likes": likes})     
+
 @ratelimit(key="ip", rate="5/m", method=["POST"], block=True)
 @login_required(login_url="login")
 def report(request, book_id):
@@ -59,7 +71,6 @@ def report(request, book_id):
         note = request.POST.get("note")
         r_reason = request.POST.get("r_reason")
         proof = request.FILES.get("image")
-
         Report.objects.create(
             user=user,
             name=name,

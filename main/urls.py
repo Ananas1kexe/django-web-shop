@@ -7,6 +7,7 @@ from django.conf import settings
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("profile/", views.profile, name="profile"),
     path("add_book/", views.add_book, name="add_book"),
     path("book/<int:pk>/", views.book_detail, name="book_detail"),
     path('book/<int:pk>/like/', views.like_book, name='like_book'),

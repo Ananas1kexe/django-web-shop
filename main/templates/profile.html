@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Profile</title>
+  <link rel="stylesheet" href="{% static 'app/profile.css' %}" />
+</head>
+<body>
+  <h1>Your Profile</h1>
+  <div class="login-container profile-container">
+    {% if user.avatar %}
+      <img
+        src="{{ user.avatar.url }}"
+        alt="Avatar"
+        class="profile-avatar"
+      />
+    {% else %}
+      <div class="profile-avatar placeholder">
+        <i class="fa-solid fa-user"></i>
+      </div>
+    {% endif %}
+    <h2>{{ user.username }}</h2>
+
+    <section class="likes-section">
+      <h3>Liked Books</h3>
+      {% if likes %}
+        <ul class="likes-list">
+          {% for like in likes %}
+            <li class="likes-item">
+              {% if like.book.image %}
+                <img
+                  src="{{ like.book.image.url }}"
+                  alt="{{ like.book.title }}"
+                  class="likes-thumb"
+                />
+              {% else %}
+                <div class="likes-thumb placeholder-thumb">
+                  <i class="fa-solid fa-book"></i>
+                </div>
+              {% endif %}
+              <span>{{ like.book.title }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="no-likes">You haven't liked any books yet.</p>
+      {% endif %}
+    </section>
+
+    <a href="{% url 'index' %}" class="link-register">&larr; Back to home</a>
+    <a href="{% url 'logout' %}" class="link-register">Log out</a>
+
+  </div>
+</body>
+</html>
